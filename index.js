@@ -9,23 +9,24 @@ var app = module.exports = express();
 app.use(express.logger('dev'));
 app.use(express.multipart());
 
-app.get('/', function (req, res) {
+app.get('/', function (req, res, next) {
   fs.readFile('index.html', function (err, data) {
-    if (err) throw err;
+    if (err) next(err);
     res.end(data);
   });
 });
 
-app.post('/', function (req, res) {
+app.post('/', function (req, res, next) {
   var filename = 'pastes/' + new Date().getTime();
   fs.writeFile(filename, req.body.data + '\n', function (err) {
-    if (err) throw err;
+    if (err) next(err);
     res.redirect(filename);
   });
 });
 
-app.get(/^\/pastes\/(\d+)$/, function (req, res) {
+app.get(/^\/pastes\/(\d+)$/, function (req, res, next) {
   fs.readFile('pastes/' + req.params[0], function (err, data) {
+    if (err) next();
     res.end(data);
   });
 });
