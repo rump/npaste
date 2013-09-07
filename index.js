@@ -7,15 +7,27 @@ var fs = require('fs');
 var app = module.exports = express();
 
 app.use(express.logger('dev'));
-
-app.post('/', function (req, res) {
-  // @todo
-  res.end('hello post');
-});
+app.use(express.multipart());
 
 app.get('/', function (req, res) {
-  // @todo
-  res.end('hello get');
+  fs.readFile('index.html', function (err, data) {
+    if (err) throw err;
+    res.end(data);
+  });
+});
+
+app.post('/', function (req, res) {
+  var filename = 'pastes/' + new Date().getTime();
+  fs.writeFile(filename, req.body.data + '\n', function (err) {
+    if (err) throw err;
+    res.redirect(filename);
+  });
+});
+
+app.get(/^\/pastes\/(\d+)$/, function (req, res) {
+  fs.readFile('pastes/' + req.params[0], function (err, data) {
+    res.end(data);  
+  });
 });
 
 app.use(function (req, res, next) {
