@@ -9,11 +9,13 @@ var app = module.exports = express();
 app.use(express.logger('dev'));
 
 app.post('/', function (req, res) {
-
+  // @todo
+  res.end('hello post');
 });
 
 app.get('/', function (req, res) {
-
+  // @todo
+  res.end('hello get');
 });
 
 app.use(function (req, res, next) {
