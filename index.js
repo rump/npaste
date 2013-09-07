@@ -10,6 +10,7 @@ app.use(express.logger('dev'));
 app.use(express.multipart());
 
 app.get('/', function (req, res, next) {
+  res.type('text/html');
   fs.readFile('index.html', function (err, data) {
     if (err) next(err);
     res.end(data);
@@ -25,6 +26,7 @@ app.post('/', function (req, res, next) {
 });
 
 app.get(/^\/pastes\/(\d+)$/, function (req, res, next) {
+  res.type('text/plain');
   fs.readFile('pastes/' + req.params[0], function (err, data) {
     if (err) next();
     res.end(data);
