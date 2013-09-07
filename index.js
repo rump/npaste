@@ -26,7 +26,7 @@ app.post('/', function (req, res) {
 
 app.get(/^\/pastes\/(\d+)$/, function (req, res) {
   fs.readFile('pastes/' + req.params[0], function (err, data) {
-    res.end(data);  
+    res.end(data);
   });
 });
 
